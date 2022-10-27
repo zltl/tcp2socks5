@@ -48,9 +48,9 @@ func Pipe(ctx context.Context, local, socks5, target string) error {
 		if err != nil {
 			log.WithError(err).Warn("cannot accept")
 			if err, ok := err.(net.Error); ok && err.Timeout() {
-				continue
+				return err
 			}
-			return err
+			continue
 		}
 
 		go func(conn net.Conn) {
