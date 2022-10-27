@@ -55,7 +55,7 @@ func main() {
 			},
 			&cli.StringFlag{
 				Name:     "target",
-				Usage:    "Forwarding target, Example: www.google.com:80",
+				Usage:    "Forwarding target, example: www.google.com:80",
 				Aliases:  []string{"t"},
 				Required: true,
 			},
