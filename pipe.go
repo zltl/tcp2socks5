@@ -12,7 +12,7 @@ import (
 )
 
 func Pipe(ctx context.Context, local, socks5, target string) error {
-	log.Debug("listening local: %s", local)
+	log.Debugf("listening local: %s", local)
 	lis, err := net.Listen("tcp", local)
 	if err != nil {
 		log.WithError(err).Fatal("cannot listen")
@@ -56,7 +56,8 @@ func Pipe(ctx context.Context, local, socks5, target string) error {
 					log.WithError(err).Errorf("cannot initialize socks5 proxy %s", socks5)
 					return
 				}
-				log.Debugf("dailing target %s with socks5 %s for", target, conn.RemoteAddr())
+				log.Debugf("dailing target %s with socks5 %s for %s", target,
+					socks5, conn.RemoteAddr())
 				c, err = dailer.Dial("tcp", target)
 				if err != nil {
 					log.WithError(err).WithField("target", target).Error("cannot dial")

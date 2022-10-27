@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"os"
+	"time"
 
 	log "github.com/sirupsen/logrus"
 	"github.com/zltl/tcp2socks5"
@@ -32,6 +33,11 @@ func main() {
 				Aliases:  []string{"t"},
 				Required: true,
 			},
+			&cli.StringFlag{
+				Name:  "log-level",
+				Usage: "Set log level: trace, debug, info, warn, error",
+				Value: "warn",
+			},
 		},
 		Action: start,
 	}
@@ -46,5 +52,20 @@ func start(c *cli.Context) error {
 	local := c.String("local")
 	socks5 := c.String("socks5")
 	target := c.String("target")
+
+	level := c.String("log-level")
+	lev, err := log.ParseLevel(level)
+	if err != nil {
+		log.WithField("error", err).Errorf("unkoiwn log-level: %s", level)
+		return err
+	}
+	log.SetLevel(lev)
+	log.SetFormatter(&log.TextFormatter{
+		ForceColors:     true,
+		DisableQuote:    true,
+		FullTimestamp:   true,
+		TimestampFormat: time.RFC3339Nano,
+	})
+
 	return tcp2socks5.Pipe(context.TODO(), local, socks5, target)
 }
