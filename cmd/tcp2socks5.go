@@ -11,10 +11,21 @@ import (
 	cli "github.com/urfave/cli/v2"
 )
 
+var (
+	VERSION = "-"
+)
+
 func main() {
 	app := &cli.App{
-		Name:  "tcp2socks5",
-		Usage: "Tunnel tcp port to socks5 proxy",
+		Name:    "tcp2socks5",
+		Usage:   "Tunnel tcp port to socks5 proxy",
+		Version: "1.0.0",
+		Authors: []*cli.Author{
+			{
+				Name:  "liaotonglang",
+				Email: "liaotonglang@gmail.com",
+			},
+		},
 		Flags: []cli.Flag{
 			&cli.StringFlag{
 				Name:    "local",
